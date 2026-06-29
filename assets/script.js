@@ -13,10 +13,7 @@ jQuery(function ($) {
         category: category,
       },
       success: function (response) {
-        console.log("response1234:", response);
         if (response.success) {
-          console.log("response", response.data.html);
-
           $("#cas-product-grid").html(response.data.html);
         }
       },
@@ -39,5 +36,55 @@ jQuery(function ($) {
     let i = $(this).siblings("input");
     let v = Math.max(1, parseInt(i.val() || 1) - 1);
     i.val(v);
+  });
+
+  $(document).on("click", ".cas-add-cart", function () {
+    let btn = $(this);
+
+    if (btn.hasClass("loading")) return;
+
+    btn.addClass("loading").text("Adding...");
+
+    let card = btn.closest(".cas-card");
+
+    $.ajax({
+      url: wc_add_to_cart_params.wc_ajax_url
+        .toString()
+        .replace("%%endpoint%%", "add_to_cart"),
+
+      type: "POST",
+
+      data: {
+        product_id: card.data("product"),
+
+        quantity: card.find(".cas-qty-input").val(),
+      },
+
+      success: function (response) {
+        btn.removeClass("loading").addClass("added").text("✓ Added");
+
+        /*
+         * WooCommerce refreshes
+         */
+
+        $(document.body).trigger("added_to_cart", [
+          response.fragments,
+
+          response.cart_hash,
+
+          btn,
+        ]);
+
+        setTimeout(function () {
+          btn.removeClass("added").text("Add To Cart");
+        }, 1200);
+      },
+
+      error: function () {
+        btn.removeClass("loading").text("Add To Cart");
+
+        alert("Unable to add product");
+      },
+    });
   });
 });

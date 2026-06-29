@@ -1,7 +1,10 @@
-Phase 3
-Replace:
-assets/style.css
-assets/script.js
-templates/product-card.php
+Version 0.4
 
-Keep ajax.php and main plugin unchanged for now.
+Replace:
+- assets/script.js
+- templates/product-card.php
+
+This phase adds frontend AJAX add-to-cart wiring.
+IMPORTANT:
+The PHP endpoint is intentionally left as TODO because it depends on your WooCommerce version.
+Next phase will complete server integration and fragment refresh.

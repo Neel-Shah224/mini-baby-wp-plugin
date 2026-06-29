@@ -32,6 +32,14 @@ function cas_enqueue_assets()
         true
     );
 
+    if (function_exists('wc')) {
+
+        wp_enqueue_script('wc-add-to-cart');
+
+        wp_enqueue_script('wc-cart-fragments');
+
+    }
+
     wp_localize_script(
         'cas-script',
         'cas_ajax',
