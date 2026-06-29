@@ -1,8 +1,20 @@
 jQuery(function ($) {
   console.log("Custom AJAX Shop Loaded");
 
-  window.loadProducts = function (category = "") {
+  window.casState = {
+    category: "",
+    search: "",
+    page: 1,
+  };
+
+  window.loadProducts = function (state) {
     $("#cas-product-grid").html('<div class="cas-loading">Loading...</div>');
+
+    if (typeof state === "string") {
+      casState.category = state;
+    } else {
+      casState = state;
+    }
 
     $.ajax({
       url: cas_ajax.ajax_url,
@@ -10,11 +22,15 @@ jQuery(function ($) {
       data: {
         action: "cas_load_products",
         nonce: cas_ajax.nonce,
-        category: category,
+        category: casState.category,
+        search: casState.search,
+        page: casState.page,
       },
       success: function (response) {
         if (response.success) {
           $("#cas-product-grid").html(response.data.html);
+
+          $("#cas-pagination").html(response.data.pagination);
         }
       },
     });
@@ -86,5 +102,28 @@ jQuery(function ($) {
         alert("Unable to add product");
       },
     });
+  });
+
+  // -- search
+  let searchTimer;
+
+  $("#cas-search").on("input", function () {
+    clearTimeout(searchTimer);
+
+    searchTimer = setTimeout(function () {
+      casState.search = $("#cas-search").val();
+
+      casState.page = 1;
+
+      loadProducts(casState);
+    }, 300);
+  });
+
+  // pagination
+
+  $(document).on("click", ".cas-page", function () {
+    casState.page = $(this).data("page");
+
+    loadProducts(casState);
   });
 });

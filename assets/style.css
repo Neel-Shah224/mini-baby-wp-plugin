@@ -69,3 +69,50 @@
 .cas-btn.view {
   background: #555;
 }
+.cas-toolbar {
+  display: flex;
+
+  justify-content: flex-end;
+
+  margin-bottom: 20px;
+}
+
+.cas-search input {
+  width: 260px;
+
+  padding: 12px 16px;
+
+  border: 1px solid #ddd;
+
+  border-radius: 8px;
+}
+
+.cas-pagination {
+  display: flex;
+
+  justify-content: center;
+
+  gap: 8px;
+
+  margin-top: 30px;
+}
+
+.cas-page {
+  width: 40px;
+
+  height: 40px;
+
+  border: 1px solid #ddd;
+
+  background: #fff;
+
+  cursor: pointer;
+
+  border-radius: 6px;
+}
+
+.cas-page.active {
+  background: #2271b1;
+
+  color: #fff;
+}

@@ -1,0 +1,4 @@
+Phase5 manual:
+1. Add toolbar HTML:
+<div class='cas-toolbar'><input id='cas-search'><select id='cas-sort'><option value='menu_order'>Default</option><option value='date'>Newest</option></select></div><div id='cas-pagination'></div>
+2. Update ajax.php to accept search/sort/page.

@@ -58,6 +58,20 @@ function cas_product_grid_shortcode()
     ob_start();
     ?>
 
+<div class="cas-toolbar">
+
+    <div class="cas-search">
+
+        <input
+            type="text"
+            id="cas-search"
+            placeholder="Search products..."
+        >
+
+    </div>
+
+</div>
+
     <div id="cas-product-grid">
 
         <div class="cas-loading">
@@ -67,6 +81,7 @@ function cas_product_grid_shortcode()
         </div>
 
     </div>
+<div id="cas-pagination"></div>
 
     <?php
 

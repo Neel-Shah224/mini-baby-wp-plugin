@@ -17,11 +17,19 @@ function cas_load_products()
         $category = sanitize_text_field($_POST['category']);
     }
 
-    $args = array(
-        'post_type' => 'product',
-        'posts_per_page' => 12,
-        'post_status' => 'publish'
+    $page = max(1, absint($_POST['page'] ?? 1));
+
+    $search = sanitize_text_field($_POST['search'] ?? '');
+    
+   $args = array(
+    'post_type'=>'product',
+    'posts_per_page'=>30,
+    'paged'=>$page,
+    'post_status'=>'publish'
     );
+    if(!empty($search)){
+        $args['s'] = $search;
+    }
 
     if (!empty($category) && $category != 'all') {
 
@@ -36,7 +44,7 @@ function cas_load_products()
     }
 
     $query = new WP_Query($args);
-
+    $total_pages = $query->max_num_pages;
     ob_start();
 
     if ($query->have_posts()) {
@@ -63,8 +71,31 @@ function cas_load_products()
 
     wp_reset_postdata();
 
+
+    $pagination = '';
+
+    if($total_pages > 1){
+
+        $pagination .= '<div class="cas-pagination">';
+
+        for($i=1;$i<=$total_pages;$i++){
+
+            $active = ($i == $page)
+                ? 'active'
+                : '';
+
+            $pagination .=
+                '<button class="cas-page '.$active.'" data-page="'.$i.'">'.$i.'</button>';
+
+        }
+
+        $pagination .= '</div>';
+
+    }
+
     wp_send_json_success(array(
-        'html' => ob_get_clean()
+        'html'=>ob_get_clean(),
+        'pagination'=>$pagination
     ));
 
 }
