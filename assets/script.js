@@ -1,45 +1,43 @@
 jQuery(function ($) {
+  console.log("Custom AJAX Shop Loaded");
 
-    console.log("Custom AJAX Shop Loaded");
+  window.loadProducts = function (category = "") {
+    $("#cas-product-grid").html('<div class="cas-loading">Loading...</div>');
 
-    window.loadProducts = function(category = "") {
+    $.ajax({
+      url: cas_ajax.ajax_url,
+      type: "POST",
+      data: {
+        action: "cas_load_products",
+        nonce: cas_ajax.nonce,
+        category: category,
+      },
+      success: function (response) {
+        console.log("response1234:", response);
+        if (response.success) {
+          console.log("response", response.data.html);
 
-        $("#cas-product-grid").html(
-            '<div class="cas-loading">Loading...</div>'
-        );
-
-        $.ajax({
-            url: cas_ajax.ajax_url,
-            type: "POST",
-            data: {
-                action: "cas_load_products",
-                nonce: cas_ajax.nonce,
-                category: category
-            },
-            success: function(response){
-console.log("response1234:", response);
-                if(response.success){
-                    console.log("response", response.data.html);
-
-                    $("#cas-product-grid").html(
-                        response.data.html
-                    );
-
-                }
-
-            }
-        });
-
-    }
-
-    // Listen for category changes
-    $(document).on("cas_category_changed", function(e, category){
-
-        loadProducts(category);
-
+          $("#cas-product-grid").html(response.data.html);
+        }
+      },
     });
+  };
 
-    // Initial load
-    loadProducts("");
+  // Listen for category changes
+  $(document).on("cas_category_changed", function (e, category) {
+    loadProducts(category);
+  });
 
+  // Initial load
+  loadProducts("");
+
+  $(document).on("click", ".cas-plus", function () {
+    let i = $(this).siblings("input");
+    i.val(parseInt(i.val() || 1) + 1);
+  });
+  $(document).on("click", ".cas-minus", function () {
+    let i = $(this).siblings("input");
+    let v = Math.max(1, parseInt(i.val() || 1) - 1);
+    i.val(v);
+  });
 });
