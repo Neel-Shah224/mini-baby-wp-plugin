@@ -4,13 +4,24 @@
      data-cart-url="<?php echo esc_url($product->add_to_cart_url()); ?>"
      data-cart-sku="<?php echo esc_attr($product->get_sku()); ?>">
 <?php if(!$product->is_in_stock()):?><div class="cas-badge">OUT OF STOCK</div><?php endif;?>
-<div class="cas-image"><a href="<?php the_permalink();?>"><?php echo $product->get_image('woocommerce_thumbnail');?></a></div>
+<div class="cas-image">
+     <a href="#"
+          class="cas-product-popup"
+          data-url="<?php echo esc_url(get_permalink()); ?>">
+          <?php echo $product->get_image('woocommerce_thumbnail');?>
+
+     </a>
+</div>
 <div class="cas-title"><?php the_title();?></div>
 <div class="cas-price"><?php echo $product->get_price_html();?></div>
 
 <?php if($product->is_in_stock()):?>
 <?php if($product->is_type('variable')):?>
-<a class="cas-btn view" href="<?php the_permalink();?>">View Options</a>
+<a href="#"
+   class="cas-btn view cas-product-popup"
+   data-url="<?php echo esc_url(get_permalink()); ?>">
+    View Options
+</a>
 <?php else:?>
 <div class="cas-qty">
 <button type="button" class="cas-minus">-</button>

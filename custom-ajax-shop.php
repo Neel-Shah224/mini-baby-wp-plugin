@@ -58,19 +58,7 @@ function cas_product_grid_shortcode()
     ob_start();
     ?>
 
-<div class="cas-toolbar">
 
-    <div class="cas-search">
-
-        <input
-            type="text"
-            id="cas-search"
-            placeholder="Search products..."
-        >
-
-    </div>
-
-</div>
 
     <div id="cas-product-grid">
 
@@ -92,3 +80,22 @@ add_shortcode(
     'custom_ajax_products',
     'cas_product_grid_shortcode'
 );
+
+
+add_action('template_redirect',function(){
+
+    if(
+        isset($_GET['iframe'])
+        &&
+        is_product()
+    ){
+
+        remove_action(
+            'storefront_header',
+            'storefront_header',
+            10
+        );
+
+    }
+
+});

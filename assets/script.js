@@ -127,3 +127,23 @@ jQuery(function ($) {
     loadProducts(casState);
   });
 });
+
+jQuery(function ($) {
+  $(document).on("click", ".cas-product-popup", function (e) {
+    e.preventDefault();
+    console.log("Popup Clicked");
+    $("#cas-popup").fadeIn();
+
+    $("#cas-product-frame").attr(
+      "src",
+
+      $(this).data("url") + "?iframe=1",
+    );
+  });
+
+  $(".cas-close,.cas-popup-overlay").click(function () {
+    $("#cas-popup").fadeOut();
+
+    $("#cas-product-frame").attr("src", "");
+  });
+});
